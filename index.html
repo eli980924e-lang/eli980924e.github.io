@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+<title>餐飲英語學習入口</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #fef3c7, #f3e8ff);
+      color: #111827;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+      padding: 24px 20px 28px;
+      backdrop-filter: blur(12px);
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 32px 32px 36px;
+      }
+    }
+
+    h1 {
+      font-size: 24px;
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .divider {
+      margin: 18px 0 16px;
+      border: none;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .pill {
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4f46e5;
+      font-weight: 500;
+      font-size: 12px;
+    }
+
+    .quiz-box {
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 16px 14px 18px;
+      background: #f9fafb;
+    }
+
+    @media (min-width: 640px) {
+      .quiz-box {
+        padding: 18px 18px 20px;
+      }
+    }
+
+    .question-label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    .question-text {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      word-break: break-word;
+    }
+
+    .mode-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #2563eb;
+      background: #dbeafe;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-left: 4px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 9px 11px;
+      border-radius: 9px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+      background-color: #ffffff;
+    }
+
+    input[type="text"]:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2);
+      background-color: #f9fafb;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+      white-space: nowrap;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.3);
+    }
+
+    .primary-btn:hover {
+      background: linear-gradient(135deg, #4338ca, #4f46e5);
+      box-shadow: 0 10px 22px rgba(79, 70, 229, 0.35);
+    }
+
+    .secondary-btn {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .secondary-btn:hover {
+      background: #d1d5db;
+    }
+
+    .feedback {
+      min-height: 22px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .feedback.correct {
+      color: #16a34a;
+    }
+
+    .feedback.wrong {
+      color: #b91c1c;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result-box {
+      margin-top: 18px;
+      padding: 16px 14px 10px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      font-size: 14px;
+    }
+
+    .score-text {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .score-detail {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .wrong-title {
+      margin-top: 14px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .wrong-list {
+      margin-top: 6px;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .wrong-item {
+      padding: 6px 8px;
+      border-radius: 8px;
+      background: #fef2f2;
+      border: 1px solid #fee2e2;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .wrong-answer {
+      color: #b91c1c;
+    }
+
+    .footer-text {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>餐飲英語學習入口</h1>
+    <p class="subtitle">請選擇要進入的測驗</p>
+    <hr class="divider">
+    <div class="quiz-box">
+      <div class="question-label">測驗清單</div>
+      <div class="input-row" style="flex-wrap: wrap;">
+        <a href="menu_quiz.html" class="primary-btn" style="text-decoration:none; display:inline-block;">餐飲英語小測驗（英翻中，混合題庫）</a>
+        <a href="service_restaurant_quiz.html" class="secondary-btn" style="text-decoration:none; display:inline-block;">服務方式／餐廳類型小測驗（英翻中）</a>
+      </div>
+      <div class="feedback" style="margin-top:12px;">若部署到 GitHub Pages，請確保此檔名為 index.html</div>
+    </div>
+    <div class="footer-text">建議把專案根目錄設定為 Pages 來源</div>
+  </div>
+</body>
+</html>
+
