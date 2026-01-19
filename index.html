@@ -1,4 +1,113 @@
 <!DOCTYPE html>
-<html>
-<body><h1>测试成功！</h1></body>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>50 題線上測驗</title>
+<style>
+body{font-family:Arial;background:#f2f2f2;}
+.box{background:#fff;max-width:900px;margin:30px auto;padding:20px;border-radius:8px;}
+.option{margin:8px 0;}
+button{margin-top:20px;padding:10px 20px;font-size:16px;}
+#feedback{margin-top:15px;font-size:18px;font-weight:bold;}
+.correct{color:green;}
+.wrong{color:red;}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h3 id="question"></h3>
+<div id="options"></div>
+<div id="feedback"></div>
+<button onclick="next()">送出 / 下一題</button>
+</div>
+
+<script>
+const quiz=[
+{q:"下列哪一個項目不屬於田徑短距離跑正式比賽項目？",options:{A:"100 公尺",B:"200 公尺",C:"800 公尺",D:"400 公尺"},a:"C"},
+{q:"田徑 4×100 公尺接力跑項目，傳接棒需在幾公尺的接力區內進行？",options:{A:"15 公尺",B:"20 公尺",C:"25 公尺",D:"30 公尺"},a:"D"},
+{q:"下列哪一個起跑口令，並非田徑短距離跑正式口令",options:{A:"準備",B:"預備",C:"鳴槍",D:"各就位"},a:"A"},
+{q:"田徑接力跑傳接棒時，裁判依據什麼判定是否超出接力區？",options:{A:"傳棒者位置",B:"接棒者之軀幹",C:"接棒者之前脚掌",D:"接力棒位置"},a:"D"},
+{q:"田徑短跑運動員手臂屈肘約成多少度擺動？",options:{A:"60",B:"70",C:"80",D:"90"},a:"D"},
+{q:"4×100 公尺接力速度最快者適合擔任第幾棒？",options:{A:"第一棒",B:"第二棒",C:"第三棒",D:"第四棒"},a:"D"},
+{q:"4×100 公尺彎道與傳接棒佳者適合第幾棒？",options:{A:"第一棒",B:"第二棒",C:"第三棒",D:"第四棒"},a:"C"},
+{q:"4×100 公尺常用傳接棒方式？",options:{A:"左手反背方式",B:"下壓式",C:"蹲踞式",D:"上挑式"},a:"B"},
+{q:"4×400 公尺常用傳接棒方式？",options:{A:"左手反背方式",B:"下壓式",C:"蹲踞式",D:"上挑式"},a:"A"},
+{q:"短距離跑放鬆技術主要是指何者放鬆？",options:{A:"關節",B:"軀幹",C:"肌肉",D:"手腕"},a:"C"},
+{q:"徑賽衝線名次判定依據？",options:{A:"頭部",B:"軀幹",C:"手部",D:"腿部"},a:"B"},
+{q:"接力掉棒應由誰撿起？",options:{A:"傳棒者",B:"接棒者",C:"任何人",D:"裁判"},a:"A"},
+{q:"起跑鳴槍前犯規處置？",options:{A:"警告",B:"加 5 秒",C:"繼續跑",D:"取消資格"},a:"D"},
+{q:"籃球強邊防守目標？",options:{A:"移動位置",B:"協助補位",C:"阻斷球線"},a:"C"},
+{q:"籃球弱邊防守目標？",options:{A:"移動位置",B:"協助補位",C:"阻斷球線"},a:"C"},
+{q:"三對三半場先得幾分獲勝？",options:{A:"11 分",B:"15 分",C:"21 分",D:"25 分"},a:"B"},
+{q:"籃球強邊是？",options:{A:"人多",B:"實力強",C:"有球邊",D:"無球邊"},a:"C"},
+{q:"籃球弱邊是？",options:{A:"人多",B:"實力強",C:"有球邊",D:"無球邊"},a:"D"},
+{q:"弱邊防守三角關係？",options:{A:"你我他",B:"框球線",C:"底線三分線",D:"球我人"},a:"D"},
+{q:"死球時利用幾秒違例？",options:{A:"3 秒",B:"5 秒",C:"8 秒",D:"24 秒"},a:"B"},
+{q:"進攻籃板後時間？",options:{A:"30 秒",B:"24 秒",C:"16 秒",D:"14 秒"},a:"D"},
+{q:"上半場暫停次數？",options:{A:"1 次",B:"2 次",C:"3 次",D:"4 次"},a:"B"},
+{q:"下半場暫停次數？",options:{A:"1 次",B:"2 次",C:"3 次",D:"4 次"},a:"C"},
+{q:"活球控制後幾秒投籃？",options:{A:"24 秒",B:"20 秒",C:"15 秒",D:"10 秒"},a:"A"},
+{q:"3 對 3 投籃秒數？",options:{A:"12 秒",B:"13 秒",C:"14 秒",D:"15 秒"},a:"A"},
+{q:"排球發球秒數？",options:{A:"5 秒",B:"8 秒",C:"10 秒",D:"15 秒"},a:"B"},
+{q:"排球發球正確敘述？",options:{A:"一次拋球",B:"無時間限制",C:"區域不限",D:"可攔網"},a:"A"},
+{q:"高手傳球手型？",options:{A:"三角形",B:"正方形",C:"圓形",D:"菱形"},a:"A"},
+{q:"排球源自？",options:{A:"網球",B:"羽球",C:"桌球",D:"籃球"},a:"A"},
+{q:"臺灣排球萌芽？",options:{A:"1922 年",B:"1932 年",C:"1942 年",D:"1952 年"},a:"A"},
+{q:"排球場尺寸？",options:{A:"8×16",B:"9×16",C:"9×18",D:"20×20"},a:"C"},
+{q:"高中排球人數？",options:{A:"2 位",B:"4 位",C:"6 位",D:"8 位"},a:"C"},
+{q:"不受影響的攻擊？",options:{A:"發球",B:"扣球",C:"舉球",D:"攔網"},a:"A"},
+{q:"漂浮發球擊球？",options:{A:"中上",B:"中下",C:"下緣",D:"不限"},a:"B"},
+{q:"標誌竿長度？",options:{A:"1.4",B:"1.6",C:"1.8",D:"2.0"},a:"C"},
+{q:"羽球一局幾分？",options:{A:"6",B:"11",C:"21",D:"30"},a:"C"},
+{q:"左發球區分數？",options:{A:"0",B:"2",C:"5",D:"8"},a:"C"},
+{q:"29 平後先到？",options:{A:"35",B:"31",C:"21",D:"30"},a:"D"},
+{q:"第三局先發球？",options:{A:"第一局勝",B:"裁判",C:"第二局勝",D:"猜拳"},a:"C"},
+{q:"20 平連續幾分？",options:{A:"2",B:"3",C:"4",D:"5"},a:"A"},
+{q:"羽球由哪國傳入英國？",options:{A:"印度",B:"馬來西亞",C:"埃及",D:"中國"},a:"A"},
+{q:"臺灣第一位世界球后？",options:{A:"鄭韶婕",B:"程文欣",C:"戴資穎",D:"簡毓瑾"},a:"C"},
+{q:"羽球得分制？",options:{A:"發球得分",B:"落地得分",C:"輪流發球",D:"右側發球"},a:"B"},
+{q:"羽球發球高度？",options:{A:"1 公尺",B:"1.05 公尺",C:"1.10 公尺",D:"1.15 公尺"},a:"D"},
+{q:"14 分接發球站位？",options:{A:"左",B:"右",C:"皆可",D:"指定"},a:"B"},
+{q:"羽球賽制？",options:{A:"三局二勝",B:"五局三勝",C:"七局四勝",D:"九局五勝"},a:"A"},
+{q:"可能的第一局比分？",options:{A:"11:8",B:"13:21",C:"21:20",D:"21:22"},a:"B"},
+{q:"發球瞬間不得高於？",options:{A:"肩",B:"胸",C:"腰",D:"手肘"},a:"C"}
+];
+
+let i=0,score=0,answered=false;
+
+function show(){
+document.getElementById("question").innerText=`第 ${i+1} 題（共 50 題）\n${quiz[i].q}`;
+const opt=document.getElementById("options");
+opt.innerHTML="";
+for(let k in quiz[i].options){
+opt.innerHTML+=`<div class="option"><input type="radio" name="ans" value="${k}"> ${k}. ${quiz[i].options[k]}</div>`;
+}
+document.getElementById("feedback").innerHTML="";
+answered=false;
+}
+
+function next(){
+const fb=document.getElementById("feedback");
+if(!answered){
+let sel="";
+document.getElementsByName("ans").forEach(r=>{if(r.checked)sel=r.value;});
+if(sel===""){alert("請選答案");return;}
+if(sel===quiz[i].a){
+score++;
+fb.innerHTML="<span class='correct'>✔ 答對</span>";
+}else{
+fb.innerHTML=`<span class='wrong'>✘ 答錯<br>正確答案是：${quiz[i].a}. ${quiz[i].options[quiz[i].a]}</span>`;
+}
+answered=true;
+}else{
+i++;
+if(i<quiz.length)show();
+else document.querySelector(".box").innerHTML=`<h2>測驗結束</h2><p>你的分數：${score} / 50</p>`;
+}
+}
+show();
+</script>
+
+</body>
 </html>
